@@ -1,3 +1,4 @@
+using System.Net;
 using BootCamp.FirstWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,17 +40,64 @@ public class CategoriesController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Post(string categoryName, string description)
+    public async Task<IActionResult> Post(CategoryCreateInput category)
     {
-        var category = new Category
-        {
-            Id = categories.Count + 1,
-            Name = categoryName,
-            Description = description
-        };
+        // var category = new Category
+        // {
+        //     Id = categories.Count + 1,
+        //     Name = categoryName,
+        //     Description = description
+        // };
 
-        categories.Add(category);
+        // categories.Add(category);
 
         return Ok(category);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> Put(CategoryEditInput category)
+    {
+        var currentCategory = categories.FirstOrDefault(x => x.Id == category.Id);  // database içerisnde yer alan kategoriyi alıyoruz
+        if (currentCategory == null)
+        {
+            return Ok(HttpStatusCode.NotFound);
+        } 
+
+        // categories.Remove(currentCategory); 
+        currentCategory.Name = category.Name;
+        currentCategory.Description = category.Description;
+        // categories.Add(currentCategory);
+
+        return Ok(currentCategory);
+    }
+
+
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id) // x
+    {
+        var category = categories.FirstOrDefault(x => x.Id == id);  // x.CaregoryName.Contains("kola")  
+
+        if (category != null)
+        {
+            categories.Remove(category);
+            return Ok(HttpStatusCode.OK);
+        }
+
+        return Ok(HttpStatusCode.NotFound);
+    }
+
+    // [HttpDelete("{id}/{cName}")]
+    // public async Task<IActionResult> DeleteSecond(int id, string cName) // x
+    // {
+    //     var category = categories.FirstOrDefault(x => x.Id == id);  // x.CaregoryName.Contains("kola")  
+
+    //     if (category != null)
+    //     {
+    //         categories.Remove(category);
+    //         return Ok(HttpStatusCode.OK);
+    //     }
+
+    //     return Ok(HttpStatusCode.NotFound);
+    // }
 }
