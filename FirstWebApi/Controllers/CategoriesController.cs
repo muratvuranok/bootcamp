@@ -1,5 +1,7 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using BootCamp.FirstWebApi.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BootCamp.FirstWebApi.Controllers;
@@ -9,6 +11,13 @@ namespace BootCamp.FirstWebApi.Controllers;
 [Route("api/v1/[controller]")]
 public class CategoriesController : ControllerBase
 {
+
+    private IValidator<CategoryCreateInput> _categoryCreateInputValidator;
+    public CategoriesController(IValidator<CategoryCreateInput> categoryCreateInputValidator)
+    {
+        this._categoryCreateInputValidator = categoryCreateInputValidator;
+    }
+
     static List<Category> categories = new List<Category> // database olarak düşünün
         {
             new Category { Id = 1, Name = "Category 1", Description = "Description of Category 1" },
@@ -43,20 +52,30 @@ public class CategoriesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(CategoryCreateInput model)
     {
-        if (ModelState.IsValid)
+
+        var result = await _categoryCreateInputValidator.ValidateAsync(model);
+ 
+        if (!result.IsValid)
         {
-            var category = new Category
-            {
-                Id = categories.Count + 1,
-                Name = model.Name,
-                Description = model.Description
-            };
-
-            categories.Add(category);
-            return Ok(category);
+            return Ok(result.Errors);
         }
+ 
+        // if (ModelState.IsValid)
+        // {
+        //     var category = new Category
+        //     {
+        //         Id = categories.Count + 1,
+        //         Name = model.Name,
+        //         Description = model.Description
+        //     };
 
-        return Ok(HttpStatusCode.BadRequest);
+        //     categories.Add(category);
+        //     return Ok(category);
+        // }
+
+        // return Ok(HttpStatusCode.BadRequest);
+
+        return Ok(model);
     }
 
     [HttpPut]
