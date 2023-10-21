@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace BootCamp.FirstWebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    List<Category> categories = new List<Category> // database olarak düşünün
+    static List<Category> categories = new List<Category> // database olarak düşünün
         {
             new Category { Id = 1, Name = "Category 1", Description = "Description of Category 1" },
             new Category { Id = 2, Name = "Category 2", Description = "Description of Category 2" },
@@ -28,7 +28,28 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        return Ok(categories[0]);
+        var category = categories.FirstOrDefault(x => x.Id == id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(category);
     }
 
+
+    [HttpPost]
+    public async Task<IActionResult> Post(string categoryName, string description)
+    {
+        var category = new Category
+        {
+            Id = categories.Count + 1,
+            Name = categoryName,
+            Description = description
+        };
+
+        categories.Add(category);
+
+        return Ok(category);
+    }
 }
