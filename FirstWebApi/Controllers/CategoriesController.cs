@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BootCamp.FirstWebApi.Controllers;
 
 [ApiController]
+// [Route("api/v1/[controller]/[action]")]
 [Route("api/v1/[controller]")]
 public class CategoriesController : ControllerBase
 {
@@ -19,7 +20,7 @@ public class CategoriesController : ControllerBase
             new Category { Id = 7, Name = "Category 7", Description = "Description of Category 7" },
             new Category { Id = 8, Name = "Category 8", Description = "Description of Category 8" }
         };
-
+    //http://localhost:5201/api/v1/Categories/GetAll
     [HttpGet]  // server to client
     public async Task<IActionResult> GetAll()   // Action
     {
@@ -40,18 +41,22 @@ public class CategoriesController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Post(CategoryCreateInput category)
+    public async Task<IActionResult> Post(CategoryCreateInput model)
     {
-        // var category = new Category
-        // {
-        //     Id = categories.Count + 1,
-        //     Name = categoryName,
-        //     Description = description
-        // };
+        if (ModelState.IsValid)
+        {
+            var category = new Category
+            {
+                Id = categories.Count + 1,
+                Name = model.Name,
+                Description = model.Description
+            };
 
-        // categories.Add(category);
+            categories.Add(category);
+            return Ok(category);
+        }
 
-        return Ok(category);
+        return Ok(HttpStatusCode.BadRequest);
     }
 
     [HttpPut]
@@ -61,7 +66,7 @@ public class CategoriesController : ControllerBase
         if (currentCategory == null)
         {
             return Ok(HttpStatusCode.NotFound);
-        } 
+        }
 
         // categories.Remove(currentCategory); 
         currentCategory.Name = category.Name;
@@ -101,3 +106,15 @@ public class CategoriesController : ControllerBase
     //     return Ok(HttpStatusCode.NotFound);
     // }
 }
+
+
+
+
+/*
+
+
+MVC  ->    www.deneme.com/categories/(Index, Edit, Delete, Add) - list vs. 
+API  ->    www.deneme.com/categories (Get, Put, Delete, Post) - list vs.
+
+
+*/
