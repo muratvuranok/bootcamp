@@ -1,0 +1,18 @@
+ -- dotnet komutları -- 
+dotnet --version                  -> version kontrolü
+dotnet new --list                 -> oluşturabileceğimiz proje başlıkları
+dotnet new webapi -n FirstWebApi  -> yeni bir api projesi oluşturmak için
+dotnet build                      -> projeyi derlemek için (succeed ise başlarılıdır)
+dotnet run                        -> projeyi çalıştırır, değişiklik yaparsanız yeniden çalıştırmanız gereklidir
+dotnet watch run                  -> projeyi çalıştırır ve yapılan değişiklikler anında uygulanır
+
+
+-- terminal komutları --
+ctrl + c                          -> ilgili çalışan server durur
+ctrl + r                          -> server yenilenir.
+
+
+-- dizin komutları --
+mkdir DizinAdi                    -> yeni bir dizin oluşturur
+cd DizinAdi                       -> ilgili dizine gitmenizi sağlar ( current direcotory)
+cd ..                             -> bir geri dizine git
