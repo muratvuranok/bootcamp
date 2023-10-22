@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace BootCamp.FirstWebApi.Models;
 public class Category
 {

@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  bootcamp-db:
+    container_name: bootcamp_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Pro247!!"
+      ACCEPT_EULA: "Y"
+
+  # bootcamp-ui:
+  #   container_name: bootcamp_ui
+
+  # bootcamp-api:
+  #   container_name: bootcamp_api

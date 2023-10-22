@@ -16,3 +16,19 @@ ctrl + r                          -> server yenilenir.
 mkdir DizinAdi                    -> yeni bir dizin oluşturur
 cd DizinAdi                       -> ilgili dizine gitmenizi sağlar ( current direcotory)
 cd ..                             -> bir geri dizine git
+
+
+-- docker komutları --
+
+docker system prune               -> kullanılmayan container, image, network, volume vs. dosyaları siler
+docker-compose up -d              -> compose file'ı çalıştırır.
+docker container ls               -> aktif olan container'ları listeler
+docker container ls -a            -> aktif ve pasif olan container'ları listeler
+docker stop  <contaner id>        -> çalışan container'ı durudurur
+docker rmi   <container id>       -> ilgili container'ı siler, ama önce durdurmanız gerekir.
+
+docker images                     -> image'ları listeler
+docker rm    <image id>           -> image'ı siler
+
+
+docker run                        -> seçtiğiniz ayarlara göre container ayağa kaldırır, var olan id değerini verirseniz, stop durumundaki container, yeni bilgiler verirseniz o bilgilere istinaden yeni bir container ayağa kaldırır.

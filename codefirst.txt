@@ -1,0 +1,18 @@
+1) Models klasörü içerisine   -> Model oluşturulması
+2) Data klasörü içerisine     -> DbContext'in eklenmesi
+3) Gerekli Paketlerin indirilmesi
+    3.1) Microsoft.EntityFrameworkCore.SqlServer
+    3.2) Microsoft.EntityFrameworkCore.Tools
+    3.3) Microsoft.EntityFrameworkCore.Design
+
+    paket indirme komutu -> dotnet add package <paket adı>
+
+
+NOT : dotnet ef komutlarını kullanmak için, tool'a ihtiyamıcız var.
+dotnet tool install --global dotnet-ef   -> daha önce indirmiş olabilirsiniz, size uyarı verecektir. 
+
+Eğer tool'u güncellemek isterseniz
+dotnet tool update --global dotnet-ef 
+
+
+4) ApplicationDbContext'in DbContext sınıfından miras alması işlemi ve konfigurasyon
