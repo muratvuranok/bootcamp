@@ -32,3 +32,10 @@ docker rm    <image id>           -> image'ı siler
 
 
 docker run                        -> seçtiğiniz ayarlara göre container ayağa kaldırır, var olan id değerini verirseniz, stop durumundaki container, yeni bilgiler verirseniz o bilgilere istinaden yeni bir container ayağa kaldırır.
+
+
+
+-- dotnet ef komutları --
+
+dotnet ef migrations add <migration için açıklma>   ->  ( Tek kelime olsun, özel karakter içermesi ve  benzersiz bir isim olsun)
+dotnet ef migrations remove                         -> En son eklenen migration'ı siler

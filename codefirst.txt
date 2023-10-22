@@ -18,3 +18,7 @@ dotnet tool update --global dotnet-ef
 4) ApplicationDbContext'in DbContext sınıfından miras alması işlemi ve konfigurasyon
 5) DbSet<> Eklenmesi
 6) appsettings.json içerisine ConnectionString eklenmesi
+7) Program.cs içerisinde DbContext'in servislere eklenmesi ve ConnectionString tanımlanması
+8) Migration
+    8.1) Migration Eklenmesi  -> dotnet ef migrations add "tanımla ismi" ( tanımlama için o an yapılan iş ile alakalı isimlendirme, özel karakter içermemelidir.)
+    8.2) Migration'(lar)ın onaylanması -> dotnet ef database update

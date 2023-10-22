@@ -1,13 +1,26 @@
+using BootCamp.FirstWebApi.Data;
 using BootCamp.FirstWebApi.Models;
 using BootCamp.FirstWebApi.Services;
 using BootCamp.FirstWebApi.Validations;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 // kendi yazdığımız servisler bu alan içerisinde yer alacak
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services
+.AddDbContext<ApplicationDbContext>(options => options
+    .UseSqlServer(builder.Configuration
+        .GetConnectionString("default")));
+
+
+// string fName = builder.Configuration["Educatior:FirstName"];
+// string lName = builder.Configuration["Educatior:LasatName"];
+
+
 
 // Validation
 
