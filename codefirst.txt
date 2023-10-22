@@ -16,3 +16,5 @@ dotnet tool update --global dotnet-ef
 
 
 4) ApplicationDbContext'in DbContext sınıfından miras alması işlemi ve konfigurasyon
+5) DbSet<> Eklenmesi
+6) appsettings.json içerisine ConnectionString eklenmesi
