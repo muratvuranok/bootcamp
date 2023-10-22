@@ -5,8 +5,23 @@ using BootCamp.FirstWebApi.Validations;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 // kendi yazdığımız servisler bu alan içerisinde yer alacak
+
+
+var allowedOrigins = "_bootcampOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowedOrigins, policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500");  // www.deneme.com
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,6 +40,9 @@ builder.Services
 // Validation
 
 builder.Services.AddScoped<IValidator<CategoryCreateInput>, CategoryCreateInputValidator>();
+builder.Services.AddTransient<IShipperService, ShipperService>();
+
+
 // builder.Services.AddTransient<ICategoryService, CategoryService>();
 // Database, Validation, AutoMapper, FulentMapping , Redis, RabbitMQ vs.... 
 
@@ -39,6 +57,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 // app.UseAuthorization(); 
-
+app.UseCors(allowedOrigins);
 app.MapControllers();
 app.Run();
