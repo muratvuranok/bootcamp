@@ -1,0 +1,22 @@
+Elinizde yer alan modeli, tüm crud işlemlerini dinamik olarak olabilirsiniz
+
+indirmeniz gereken'ler
+
+1) Tools
+    1.1) indirme    -> dotnet tool install -g dotnet-aspnet-codegenerator
+    1.2) güncelleme -> dotnet tool update -g dotnet-aspnet-codegenerator
+2) Paketler
+    2.1) Microsoft.VisualStudio.Web.CodeGeneration.Design
+
+
+scaffold için gerekli komutlarını
+
+dotnet aspnet-codegenerator controller -name ShippersController -async -api -m Shipper -dc ApplicationDbContext -outDir Controllers
+
+
+-name   -> Kontroller'ın adı, sonu Controller ile bitmeli
+-async  -> metotlar(actions) asyn(asenkron) olsun
+-api    -> projenin tipi, default'u MVC web projesidir
+-m      -> Model, Hangi modeli kullanarak oluşturacak
+-dc     -> DataContext, bizim projemizde DataContext ApplicationDbContext'outDir
+-outDir -> Controller hangi dizinde yer alacak

@@ -1,9 +1,13 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace BootCamp.FirstWebApi.Models;
-public class Category
+
+public class CategoryCreateInput
 {
-    public int Id { get; set; } 
+
+    // [
+    //     Required(ErrorMessage = "Kategori Adı, boş geçilemez"),
+    //     MaxLength(10, ErrorMessage = "Kategori Adı, 10 karakterden fazla olamaz"),
+    //     MinLength(3, ErrorMessage = "Kategori Adı, 3 karakterden az olamaz")
+    // ]
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
 }

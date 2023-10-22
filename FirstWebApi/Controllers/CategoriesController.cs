@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using BootCamp.FirstWebApi.Data;
 using BootCamp.FirstWebApi.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,14 @@ namespace BootCamp.FirstWebApi.Controllers;
 public class CategoriesController : ControllerBase
 {
 
+    private readonly ApplicationDbContext _context;
     private IValidator<CategoryCreateInput> _categoryCreateInputValidator;
-    public CategoriesController(IValidator<CategoryCreateInput> categoryCreateInputValidator)
+    public CategoriesController(IValidator<CategoryCreateInput> categoryCreateInputValidator, ApplicationDbContext context)
     {
         this._categoryCreateInputValidator = categoryCreateInputValidator;
+        this._context = context;
     }
+
 
     static List<Category> categories = new List<Category> // database olarak düşünün
         {
@@ -33,19 +37,24 @@ public class CategoriesController : ControllerBase
     [HttpGet]  // server to client
     public async Task<IActionResult> GetAll()   // Action
     {
-        return Ok(categories);
+        // return Ok(categories);
+        var _categories = _context.Categories.ToList();
+        return Ok(_categories);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var category = categories.FirstOrDefault(x => x.Id == id);
-        if (category == null)
-        {
-            return NotFound();
-        }
+        // var category = categories.FirstOrDefault(x => x.Id == id);
+        // if (category == null)
+        // {
+        //     return NotFound();
+        // }
 
-        return Ok(category);
+        // return Ok(category);
+
+        var category = await _context.Categories.FindAsync(id); // primarey key üzerinden arama yapar
+        return category == null ? NotFound() : Ok(category);
     }
 
 
@@ -54,12 +63,12 @@ public class CategoriesController : ControllerBase
     {
 
         var result = await _categoryCreateInputValidator.ValidateAsync(model);
- 
+
         if (!result.IsValid)
         {
             return Ok(result.Errors);
         }
- 
+
         // if (ModelState.IsValid)
         // {
         //     var category = new Category
@@ -75,24 +84,59 @@ public class CategoriesController : ControllerBase
 
         // return Ok(HttpStatusCode.BadRequest);
 
-        return Ok(model);
+
+        // 1. Yol
+        // var category = new Category();
+        // category.Name = model.Name;
+        // category.Description = model.Description;
+
+        // Category category = new();
+        // category.Name = model.Name;
+        // category.Description = model.Description;
+
+
+        var category = new Category
+        {
+            Name = model.Name,
+            Description = model.Description
+        };
+
+        await _context.Categories.AddAsync(category);  // model'i dbSet'e ekler
+        await _context.SaveChangesAsync();             // dbset üzerindeki değişiklikleri veritabanına yansıtır
+
+        return Ok(category);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(CategoryEditInput category)
+    public async Task<IActionResult> Put(CategoryEditInput model)
     {
-        var currentCategory = categories.FirstOrDefault(x => x.Id == category.Id);  // database içerisnde yer alan kategoriyi alıyoruz
-        if (currentCategory == null)
+        // var currentCategory = categories.FirstOrDefault(x => x.Id == category.Id);  // database içerisnde yer alan kategoriyi alıyoruz
+        // if (currentCategory == null)
+        // {
+        //     return Ok(HttpStatusCode.NotFound);
+        // }
+
+        // // categories.Remove(currentCategory); 
+        // currentCategory.Name = category.Name;
+        // currentCategory.Description = category.Description;
+        // // categories.Add(currentCategory);
+
+        // return Ok(currentCategory);
+
+        var category = await _context.Categories.FindAsync(model.Id);
+        if (category == null)
         {
             return Ok(HttpStatusCode.NotFound);
         }
 
-        // categories.Remove(currentCategory); 
-        currentCategory.Name = category.Name;
-        currentCategory.Description = category.Description;
-        // categories.Add(currentCategory);
 
-        return Ok(currentCategory);
+        category.Name = model.Name;
+        category.Description = model.Description;
+
+        _context.Categories.Update(category);
+        bool result = await _context.SaveChangesAsync() > 0;
+
+        return result ? Ok(category) : Ok(HttpStatusCode.BadRequest);
     }
 
 
@@ -100,15 +144,25 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id) // x
     {
-        var category = categories.FirstOrDefault(x => x.Id == id);  // x.CaregoryName.Contains("kola")  
+        // var category = categories.FirstOrDefault(x => x.Id == id);  // x.CaregoryName.Contains("kola")  
 
-        if (category != null)
+        // if (category != null)
+        // {
+        //     categories.Remove(category);
+        //     return Ok(HttpStatusCode.OK);
+        // }
+
+        // return Ok(HttpStatusCode.NotFound);
+
+        var category = await _context.Categories.FindAsync(id);
+        if (category == null)
         {
-            categories.Remove(category);
-            return Ok(HttpStatusCode.OK);
+            return Ok(HttpStatusCode.NotFound);
         }
 
-        return Ok(HttpStatusCode.NotFound);
+        _context.Categories.Remove(category);
+         bool result = await _context.SaveChangesAsync() > 0; 
+        return result ? Ok(category) : Ok(HttpStatusCode.BadRequest);
     }
 
     // [HttpDelete("{id}/{cName}")]
