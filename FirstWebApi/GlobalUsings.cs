@@ -1,0 +1,9 @@
+﻿global using AutoMapper;
+global using BootCamp.FirstWebApi.Data;
+global using BootCamp.FirstWebApi.Models;
+global using BootCamp.FirstWebApi.Services;
+global using BootCamp.Models;
+global using BootCamp.Models.Dtos.CustomersDto;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Net;
+global using System.Linq.Expressions;

@@ -1,4 +1,4 @@
-using BootCamp.FirstWebApi.Models;
+using BootCamp.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace BootCamp.FirstWebApi.Data;
@@ -7,26 +7,11 @@ public class ApplicationDbContext : DbContext  // IdentityDbContext<IdentityUser
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Shipper> Shippers { get; set; }
-
-
+    public DbSet<Customer> Customers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-
         // fluentapi -> mapping
-
-        modelBuilder.Entity<Category>().ToTable("Categories"); // Aksi belirtimdiği sürece DbSet ismi geçerli olacaktır. Categories
-        modelBuilder.Entity<Category>()
-        .Property(x => x.Name)
-        .HasMaxLength(150)
-        .IsRequired();  // default değeri true
-
-        modelBuilder.Entity<Category>()
-        .Property(x => x.Description)
-        .HasMaxLength(500)
-        .IsRequired(false);
-
 
 
 
@@ -42,6 +27,11 @@ public class ApplicationDbContext : DbContext  // IdentityDbContext<IdentityUser
         .HasMaxLength(24)
         .IsRequired(false);
 
+
+
+        modelBuilder.ApplyConfiguration(new CustomerMapping());
+        modelBuilder.ApplyConfiguration(new CategoryMapping());
+        modelBuilder.ApplyConfiguration(new ProductMapping());
 
         base.OnModelCreating(modelBuilder);
     }

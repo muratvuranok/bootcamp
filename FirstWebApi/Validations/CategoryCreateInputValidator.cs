@@ -1,4 +1,3 @@
-using BootCamp.FirstWebApi.Models;
 using FluentValidation;
 
 namespace BootCamp.FirstWebApi.Validations;

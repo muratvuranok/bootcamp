@@ -1,13 +1,6 @@
-namespace BootCamp.FirstWebApi.Models;
-public class Category : BaseEntity
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; }
+﻿namespace BootCamp.FirstWebApi.Models;
 
-
-    public ICollection<Product>? Products { get; set; }
-}
+public class BaseEntity { }
 
 
 // AddTransient  -> her istek için yeni bir servis oluşturur

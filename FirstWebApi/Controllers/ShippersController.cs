@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using BootCamp.FirstWebApi.Data;
-using BootCamp.FirstWebApi.Models;
-using BootCamp.FirstWebApi.Services;
-
 namespace FirstWebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -19,7 +14,8 @@ namespace FirstWebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Shipper>>> GetShippers()
         {
-            return await _shipperService.GetAllAsync();
+            var shippers = await _shipperService.GetAsync();
+            return shippers.ToList();
         }
 
         // GET: api/Shippers/5
@@ -27,7 +23,7 @@ namespace FirstWebApi.Controllers
         public async Task<ActionResult<Shipper>> GetShipper(int id)
         {
 
-            var shipper = await _shipperService.GetByIdAsync(id);
+            var shipper = await _shipperService.GetAsync(id);
 
             if (shipper == null)
             {

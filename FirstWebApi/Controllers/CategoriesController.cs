@@ -1,9 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using BootCamp.FirstWebApi.Data;
-using BootCamp.FirstWebApi.Models;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BootCamp.FirstWebApi.Controllers;
 
@@ -161,7 +156,7 @@ public class CategoriesController : ControllerBase
         }
 
         _context.Categories.Remove(category);
-         bool result = await _context.SaveChangesAsync() > 0; 
+        bool result = await _context.SaveChangesAsync() > 0;
         return result ? Ok(category) : Ok(HttpStatusCode.BadRequest);
     }
 
